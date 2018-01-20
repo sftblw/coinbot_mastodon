@@ -1,0 +1,13 @@
+[package]
+name = "coinbot_mastodon"
+version = "0.1.0"
+authors = ["ChanHwi, Choi (aka Ch.) <ccwpc@hanmail.net>"]
+
+[dependencies]
+mammut = "0.9.1"
+yup-oauth2 = "1.0.6"
+serde = "1.0.27"
+serde_derive = "1.0.27"
+toml = "0.4"
+reqwest = "0.8"
+serde_json = "1.0"
