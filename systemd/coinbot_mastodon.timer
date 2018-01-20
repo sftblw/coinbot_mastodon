@@ -1,0 +1,8 @@
+[Unit]
+Description=repeatly run coinbot_mastodon.service
+
+[Timer]
+OnCalendar=0/3:0:0
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,7 @@
+[Unit]
+Desscription=run coinbot_mastodon once
+
+[Service]
+Type=oneshot
+ExecStart=/home/pi/Apps/coinbot_mastodon/coinbot_mastodon
+WorkingDirectory=/home/pi/Apps/coinbot_mastodon
