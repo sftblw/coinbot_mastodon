@@ -16,9 +16,13 @@ pub fn post_recent(coins: &[upbit::Coin], mstdn: &mammut::Mastodon) {
         thread::sleep(time::Duration::from_millis(500));
     }
 
-    let result = mstdn.new_status(mammut::StatusBuilder::new(
-        content
-    ));
+    let status = mammut::StatusBuilder{
+        status: content,
+        visibility: Some(mammut::status_builder::Visibility::Unlisted),
+        ..Default::default() // 이거 처음보는데 좋아보인다
+    };
+
+    let result = mstdn.new_status(status);
     // mammut 버그로 보임. // Serde(ErrorImpl { code: Message("missing field `error`"), line: 1, column: 2335 })
 //    if let Err(e) = result {
 //        panic!("error happend while posting to mastodon: {:?}", e);

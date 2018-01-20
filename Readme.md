@@ -15,6 +15,8 @@ binary project. "config" folder is required to run.
 3. form it (post.rs)
 4. post to mastodon (post.rs)
 
+As you expect, post.rs and main.rs is not organized well.
+
 ## main dependency
 
 - [Aaronepower/Mammut](https://github.com/Aaronepower/Mammut) for posting to mastodon
