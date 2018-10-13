@@ -2,7 +2,7 @@ extern crate mammut;
 extern crate toml;
 
 use self::mammut::Registration;
-use self::mammut::apps::{AppBuilder, Scope};
+use self::mammut::apps::{AppBuilder, Scopes};
 
 use std::path::Path;
 use std::fs::File;
@@ -49,7 +49,7 @@ fn auth<'a>(app_name: &'a  str, instance_url: &'a str) -> Result<mammut::Data, B
     let app = AppBuilder {
         client_name: app_name,
         redirect_uris: "urn:ietf:wg:oauth:2.0:oob",
-        scopes: Scope::Write,
+        scopes: Scopes::Write,
         website: None,
     };
 
