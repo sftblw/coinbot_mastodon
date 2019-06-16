@@ -4,10 +4,10 @@ version = "0.1.0"
 authors = ["ChanHwi, Choi (aka Ch.) <ccwpc@hanmail.net>"]
 
 [dependencies]
-mammut = "0.11.0"
-serde = "1.0.79"
-serde_derive = "1.0.79"
-toml = "0.4"
-reqwest = "0.9.2"
+mammut = "0.12"
+serde = "1.0"
+serde_derive = "1.0"
+toml = "0.5"
+reqwest = "0.9"
 serde_json = "1.0"
-separator = "0.3.1"
+separator = "0.4"
