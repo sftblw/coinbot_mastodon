@@ -24,6 +24,7 @@ fn execute(mstdn: &mammut::Mastodon) {
         upbit::Coin::SBD,
         upbit::Coin::ADA,
         upbit::Coin::QTUM,
+        upbit::Coin::XMR,
     ];
     post::post_recent(&coins, &mstdn);
 }

@@ -89,7 +89,7 @@ impl ToString for Market {
 #[derive(Clone, Copy)]
 #[allow(non_snake_case)]
 pub enum Coin {
-    BTC, ETH, XRP, STEEM, SBD, ADA, QTUM
+    BTC, ETH, XRP, STEEM, SBD, ADA, QTUM, XMR
 }
 
 impl ToString for Coin {
@@ -102,6 +102,7 @@ impl ToString for Coin {
             &Coin::SBD => "SBD".to_owned(),
             &Coin::ADA => "ADA".to_owned(),
             &Coin::QTUM => "QTUM".to_owned(),
+            &Coin::XMR => "XMR".to_owned(),
         }
     }
 }
