@@ -38,7 +38,7 @@ pub struct ApiRequest {
     pub period_type: PeriodType,
     pub period: u8,
     pub market: Market,
-    pub coin: Coin,
+    pub coin: String,
     pub data_count: u8
 }
 

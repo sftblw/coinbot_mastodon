@@ -9,7 +9,6 @@ use std::path::Path;
 
 fn main() {
     let mstdn = mastodon::load_or_auth("coinbot",
-                                       "https://twingyeo.kr",
                                        &Path::new("./config/mastodon.toml"));
     execute(&mstdn);
 //    mstdn.new_status(mammut::StatusBuilder::new("Hello, mammut! from disc-saved config".to_owned()));
@@ -17,14 +16,14 @@ fn main() {
 
 fn execute(mstdn: &mammut::Mastodon) {
     let coins = [
-        upbit::Coin::BTC,
-        upbit::Coin::ETH,
-        upbit::Coin::XRP,
-        upbit::Coin::STEEM,
-        upbit::Coin::SBD,
-        upbit::Coin::ADA,
-        upbit::Coin::QTUM,
-        upbit::Coin::XMR,
+        "BTC".to_owned(),
+        "ETH".to_owned(),
+        "XRP".to_owned(),
+        "STEEM".to_owned(),
+        "SBD".to_owned(),
+        "ADA".to_owned(),
+        "QTUM".to_owned(),
+        "XMR".to_owned()
     ];
     post::post_recent(&coins, &mstdn);
 }

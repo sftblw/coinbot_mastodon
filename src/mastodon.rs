@@ -1,21 +1,19 @@
 extern crate mammut;
 extern crate toml;
 
-use self::mammut::Registration;
+use self::mammut::{Registration, Data};
 use self::mammut::apps::{AppBuilder, Scopes};
 
 use std::path::Path;
 use std::fs::File;
-use std::io;
+use std::{io, fs};
 use std::io::prelude::*;
 
 use std::error::Error;
 
-pub fn load_or_auth<'a> (app_name: &'a str, instance_url: &'a str, store_path: &Path)
-    -> mammut::Mastodon {
-
+pub fn load_or_auth(app_name: &str, store_path: &Path) -> mammut::Mastodon {
     // try load and if fails do the auth process.
-    let mammut_data = match {
+    let mammut_data: Data = match {
         |store_path: &Path| -> Result<mammut::Data, Box<Error>>{
             let mut buf = String::new();
             File::open(store_path)?.read_to_string(&mut buf)?;
@@ -26,8 +24,12 @@ pub fn load_or_auth<'a> (app_name: &'a str, instance_url: &'a str, store_path: &
     } {
         Ok(d) => d,
         Err(_) => {
-            let data = auth(app_name, instance_url)
+            let data = auth(app_name)
                 .expect("Mastodon auth process somehow failed.");
+
+            let p = Path::new(store_path);
+            fs::create_dir_all(if !p.extension().unwrap().is_empty() { p.parent().unwrap() } else { p } );
+
             File::create(store_path)
                 .expect(&format!("can't create mastodon config file {}",
                                 store_path.to_str().unwrap())
@@ -45,7 +47,7 @@ pub fn load_or_auth<'a> (app_name: &'a str, instance_url: &'a str, store_path: &
     mammut::Mastodon::from_data(mammut_data)
 }
 
-fn auth<'a>(app_name: &'a  str, instance_url: &'a str) -> Result<mammut::Data, Box<Error>>{
+fn auth(app_name: &str) -> Result<mammut::Data, Box<Error>> {
     let app = AppBuilder {
         client_name: app_name,
         redirect_uris: "urn:ietf:wg:oauth:2.0:oob",
@@ -53,13 +55,20 @@ fn auth<'a>(app_name: &'a  str, instance_url: &'a str) -> Result<mammut::Data, B
         website: None,
     };
 
+    println!("# Mastodon authorization process");
+    println!();
+
+    print!("# instance: ");
+    io::stdout().flush()?;
+    let mut instance_url = String::new();
+    io::stdin().read_line(&mut instance_url);
+    instance_url = instance_url.trim_end().to_owned();
+
     let mut registration = Registration::new(instance_url);
     registration.register(app)?;
     let url = registration.authorise()?;
 
-    println!("# Mastodon authorization process");
-    println!();
-    println!("Open this url \"{}\"", url);
+    println!("Open this url \" {} \"", url);
     println!("and Authrorize, and paste key and press enter.");
     print!("key :");
     io::stdout().flush()?;
