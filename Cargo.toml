@@ -4,7 +4,7 @@ version = "0.1.1"
 authors = ["ChanHwi, Choi (aka Ch.) <ccwpc@hanmail.net>"]
 
 [dependencies]
-mammut = "0.12"
+mammut = "0.13"
 serde = "1.0"
 serde_derive = "1.0"
 toml = "0.5"
