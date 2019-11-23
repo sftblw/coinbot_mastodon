@@ -5,6 +5,7 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::error::Error;
 use util;
+use std::io;
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct CoinConfig {
@@ -29,7 +30,7 @@ pub fn load_coins(path: &Path) -> CoinConfig {
     } {
         Ok(d) => d,
         Err(_) => {
-            let coins = coins_cli();
+            let coins = coins_cli().unwrap();
 
             let p = Path::new(path);
 
@@ -52,8 +53,8 @@ pub fn load_coins(path: &Path) -> CoinConfig {
     coins_data
 }
 
-fn coins_cli() -> CoinConfig {
-    let coins = [
+fn coins_cli() -> Result<CoinConfig, Box<dyn Error>> {
+    let coins_default = [
         "BTC".to_owned(),
         "ETH".to_owned(),
         "XRP".to_owned(),
@@ -64,5 +65,35 @@ fn coins_cli() -> CoinConfig {
         "XMR".to_owned()
     ];
 
-    CoinConfig::new(coins.to_vec())
+    println!("# What coin do yo want to retrieve?");
+    println!("- default: uses default list");
+    println!("- name: adds to the list");
+    println!("- ok: finishes");
+    println!();
+    println!("you can modify later with configuration file.");
+    println!();
+
+    let mut coins: Vec<String> = vec![];
+
+    loop {
+        println!("[default|name|ok] ");
+        print!("coin : ");
+
+        io::stdout().flush()?;
+        let mut buf = String::new();
+        io::stdin().read_line(&mut buf)?;
+        let coin: String = buf.trim_end().to_owned();
+
+        match coin.as_ref() {
+            "default" => return Ok(CoinConfig::new(coins_default.to_vec())),
+            "ok" => break,
+            _ => {
+                coins.push(coin.to_uppercase());
+                println!("list: {}", coins.join(","));
+                println!();
+            }
+        }
+    }
+
+    return Ok(CoinConfig::new(coins.to_vec()))
 }
