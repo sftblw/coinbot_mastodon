@@ -62,7 +62,7 @@ fn coins_cli() -> Result<CoinConfig, Box<dyn Error>> {
         "SBD".to_owned(),
         "ADA".to_owned(),
         "QTUM".to_owned(),
-        "XMR".to_owned()
+        "STORJ".to_owned()
     ];
 
     println!("# What coin do yo want to retrieve?");
