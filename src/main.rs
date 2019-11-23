@@ -1,29 +1,20 @@
 extern crate coinbot_mastodon;
 extern crate mammut;
 
-use coinbot_mastodon::upbit;
+use coinbot_mastodon::{coin_storage};
 use coinbot_mastodon::mastodon;
 use coinbot_mastodon::post;
 
 use std::path::Path;
+use coinbot_mastodon::coin_storage::CoinConfig;
 
 fn main() {
     let mstdn = mastodon::load_or_auth("coinbot",
                                        &Path::new("./config/mastodon.toml"));
-    execute(&mstdn);
-//    mstdn.new_status(mammut::StatusBuilder::new("Hello, mammut! from disc-saved config".to_owned()));
+    let coin_conf: CoinConfig = coin_storage::load_coins(&Path::new("./config/coins.toml"));
+    execute(&mstdn, coin_conf.coins);
 }
 
-fn execute(mstdn: &mammut::Mastodon) {
-    let coins = [
-        "BTC".to_owned(),
-        "ETH".to_owned(),
-        "XRP".to_owned(),
-        "STEEM".to_owned(),
-        "SBD".to_owned(),
-        "ADA".to_owned(),
-        "QTUM".to_owned(),
-        "XMR".to_owned()
-    ];
+fn execute(mstdn: &mammut::Mastodon, coins: Vec<String>) {
     post::post_recent(&coins, &mstdn);
 }

@@ -6,15 +6,16 @@ use self::mammut::apps::{AppBuilder, Scopes};
 
 use std::path::Path;
 use std::fs::File;
-use std::{io, fs};
+use std::io;
 use std::io::prelude::*;
 
 use std::error::Error;
+use util;
 
 pub fn load_or_auth(app_name: &str, store_path: &Path) -> mammut::Mastodon {
     // try load and if fails do the auth process.
     let mammut_data: Data = match {
-        |store_path: &Path| -> Result<mammut::Data, Box<Error>>{
+        |store_path: &Path| -> Result<mammut::Data, Box<dyn Error>>{
             let mut buf = String::new();
             File::open(store_path)?.read_to_string(&mut buf)?;
             let data: mammut::Data = toml::from_str(&buf)?;
@@ -28,7 +29,7 @@ pub fn load_or_auth(app_name: &str, store_path: &Path) -> mammut::Mastodon {
                 .expect("Mastodon auth process somehow failed.");
 
             let p = Path::new(store_path);
-            fs::create_dir_all(if !p.extension().unwrap().is_empty() { p.parent().unwrap() } else { p } );
+            util::create_dir_by_ext(p).unwrap();
 
             File::create(store_path)
                 .expect(&format!("can't create mastodon config file {}",
@@ -47,7 +48,7 @@ pub fn load_or_auth(app_name: &str, store_path: &Path) -> mammut::Mastodon {
     mammut::Mastodon::from_data(mammut_data)
 }
 
-fn auth(app_name: &str) -> Result<mammut::Data, Box<Error>> {
+fn auth(app_name: &str) -> Result<mammut::Data, Box<dyn Error>> {
     let app = AppBuilder {
         client_name: app_name,
         redirect_uris: "urn:ietf:wg:oauth:2.0:oob",
@@ -61,7 +62,7 @@ fn auth(app_name: &str) -> Result<mammut::Data, Box<Error>> {
     print!("# instance: ");
     io::stdout().flush()?;
     let mut instance_url = String::new();
-    io::stdin().read_line(&mut instance_url);
+    io::stdin().read_line(&mut instance_url)?;
     instance_url = instance_url.trim_end().to_owned();
 
     let mut registration = Registration::new(instance_url);

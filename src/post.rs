@@ -23,14 +23,9 @@ pub fn post_recent(coins: &[String], mstdn: &mammut::Mastodon) {
     };
 
     let _result = mstdn.new_status(status);
-    // mammut 버그로 보임. // Serde(ErrorImpl { code: Message("missing field `error`"), line: 1, column: 2335 })
-//    if let Err(e) = result {
-//        panic!("error happend while posting to mastodon: {:?}", e);
-//    }
 }
 
 fn get_recent_by_coin(coin: &String) -> f64 {
-//    println!("coin: {}", coin.to_string());
     let api_req = &(upbit::ApiRequest {
         period_type: upbit::PeriodType::Minutes,
         period: 60,

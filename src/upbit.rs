@@ -3,7 +3,7 @@ extern crate serde_json;
 
 use std::error::Error;
 
-pub fn request(req: &ApiRequest) -> Result<Vec<ApiResult>, Box<Error>>{
+pub fn request(req: &ApiRequest) -> Result<Vec<ApiResult>, Box<dyn Error>>{
     let url = req.to_endpoint();
 //    println!("url: {}", url);
     let mut result = reqwest::get(&url)?;
@@ -82,27 +82,6 @@ impl ToString for Market {
             &Market::BTC => "BTC".to_owned(),
             &Market::ETH => "ETH".to_owned(),
             &Market::USDTT => "USDTT".to_owned(),
-        }
-    }
-}
-
-#[derive(Clone, Copy)]
-#[allow(non_snake_case)]
-pub enum Coin {
-    BTC, ETH, XRP, STEEM, SBD, ADA, QTUM, XMR
-}
-
-impl ToString for Coin {
-    fn to_string(&self) -> String {
-        match self {
-            &Coin::BTC => "BTC".to_owned(),
-            &Coin::ETH => "ETH".to_owned(),
-            &Coin::XRP => "XRP".to_owned(),
-            &Coin::STEEM => "STEEM".to_owned(),
-            &Coin::SBD => "SBD".to_owned(),
-            &Coin::ADA => "ADA".to_owned(),
-            &Coin::QTUM => "QTUM".to_owned(),
-            &Coin::XMR => "XMR".to_owned(),
         }
     }
 }
