@@ -1,7 +1,7 @@
 extern crate mammut;
 extern crate separator;
 
-use upbit;
+use crate::upbit;
 use self::separator::Separatable;
 use std::{thread, time};
 

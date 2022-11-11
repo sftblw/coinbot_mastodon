@@ -10,7 +10,7 @@ use std::io;
 use std::io::prelude::*;
 
 use std::error::Error;
-use util;
+use crate::util;
 
 pub fn load_or_auth(app_name: &str, store_path: &Path) -> mammut::Mastodon {
     // try load and if fails do the auth process.
