@@ -8,13 +8,13 @@ use coinbot_mastodon::post;
 use std::path::Path;
 use coinbot_mastodon::coin_storage::CoinConfig;
 
-fn main() {
+#[tokio::main]
+async fn main() -> anyhow::Result<()> {
     let mstdn = mastodon::load_or_auth("coinbot",
                                        &Path::new("./config/mastodon.toml"));
     let coin_conf: CoinConfig = coin_storage::load_coins(&Path::new("./config/coins.toml"));
-    execute(&mstdn, coin_conf.coins);
-}
 
-fn execute(mstdn: &mammut::Mastodon, coins: Vec<String>) {
-    post::post_recent(&coins, &mstdn);
+    post::post_recent(&coin_conf.coins, &mstdn).await?;
+
+    Ok(())
 }

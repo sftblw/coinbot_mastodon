@@ -1,16 +1,11 @@
 extern crate reqwest;
 extern crate serde_json;
 
-use std::error::Error;
-
-pub fn request(req: &ApiRequest) -> Result<Vec<ApiResult>, Box<dyn Error>>{
+pub async fn request(req: &ApiRequest) -> anyhow::Result<Vec<ApiResult>>{
     let url = req.to_endpoint();
-//    println!("url: {}", url);
-    let mut result = reqwest::get(&url)?;
 
-    // I don't know why but parsing json should be done in separated...
-    let text = result.text().unwrap();
-//    println!("result: {}", &text);
+    let result = reqwest::get(&url).await?;
+    let text = result.text().await.unwrap();
 
     let result: Vec<ApiResult> = serde_json::from_str(&text)?;
 
