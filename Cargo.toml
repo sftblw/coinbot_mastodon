@@ -3,6 +3,7 @@ name = "coinbot_mastodon"
 version = "0.1.1"
 authors = ["ChanHwi, Choi (aka Ch.) <ccwpc@hanmail.net>"]
 edition = "2021"
+license = "MIT"
 
 [dependencies]
 mammut = "0.13"
